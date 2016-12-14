@@ -1,0 +1,65 @@
+\section{Core functionalities}
+\label{sec:core}
+
+The library's package is organized by modules. The most important modules are:
+\begin{itemize} \item \texttt{attacks}: contains the implementations of
+adversarial example crafting algorithms \item \texttt{utils\_tf}: contains
+helper functions to train and evaluate models using TensorFlow. This module also
+includes the implementation of adversarial training, a defense to make models
+more robust to adversarial examples. \end{itemize}
+
+In the following, we describe some of the research results behind the
+implementations made in \texttt{cleverhans}.
+
+\subsection{Attacks}
+
+Adversarial example crafting algorithms implemented in \texttt{cleverhans} take
+a model, and an input, and return the corresponding adversarial example. Here
+are the algorithms currently implemented in the \texttt{attacks} module.
+
+\subsubsection{Fast Gradient Sign Method} \label{sec:fgsm}
+
+The fast gradient sign method (FGSM) was introduced by Goodfellow et
+al.~\cite{goodfellow2014explaining}. The intuition behind the attack is to
+linearize the cost function $J$ used to train a model $f$ around the
+neighborhood of the training point $\vec{x}$ that the adversary wants to force
+the misclassification of. The resulting adversarial example $\vec{x}^*$
+corresponding to input $\vec{x}$ is computed as follows: \begin{equation}
+\vec{x}^* \leftarrow x + \varepsilon \cdot \nabla_{\vec{x}}J(f, \theta, \vec{x})
+\end{equation} where $\varepsilon$ is a parameter controlling the magnitude of
+the perturbation introduced. Larger values increase the likelihood that
+$\vec{x}^*$ will be misclassified by $f$, but make the perturbation easier to
+detect by a human.
+
+The fast gradient sign method is available by calling \texttt{attacks.fgsm()}
+The implementation defines the necessary graph elements and returns a tensor,
+which once evaluated holds the value of the adversarial example corresponding to
+the input provided. The implementation is parameterized by the parameter
+$\varepsilon$ introduced above. It is possible to configure the method to clip
+adversarial examples so that they are constrained to be part of the expected
+input domain range.
+
+\subsection{Defenses}
+
+The intuition behind defenses against adversarial examples is to make the model
+smoother by limiting its sensitivity to small perturbations of its inputs (and
+therefore making adversarial examples harder to craft). Since all defenses
+currently proposed modify the learning algorithm used to train the model, we
+implement them in the modules of \texttt{cleverhans} that contain the functions
+used to train models. In module \texttt{utils\_tf}, the following defenses are
+implemented.
+
+\subsubsection{Adversarial training}
+
+The intuition behind adversarial
+training~\cite{szegedy2013intriguing,goodfellow2014explaining} is to inject
+adversarial examples during training to improve the generalization of the
+machine learning model. To achieve this effect, the training function
+\texttt{tf\_model\_train()} implemented in module \texttt{utils\_tf} can be
+given the tensor definition for an adversarial example: e.g., the one returned
+by the method described in Section~\ref{sec:fgsm}. When such a tensor is given,
+the training algorithm modifies the loss function used to optimize the model
+parameters: it is in that case defined as the average between the loss for
+predictions on legitimate inputs and the loss for predictions made on
+adversarial examples. The remainder of the training algorithm is left unchanged.
+

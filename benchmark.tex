@@ -1,0 +1,31 @@
+\section{Reporting Benchmark Results}
+\label{sec:benchmark}
+
+This section provides instructions for how to preprare and report benchmark
+results.
+
+When comparing against previously published benchmarks, it is best to to use the
+same version of \texttt{cleverhans} as was used to produce the previous
+benchmarks. This minimizes the possibility that an undetected change in behavior
+between versions could cause a difference in the output of the benchmark
+results.
+
+When reporting new results that are not directly compared to previous work, it
+is best to use the most recent versioned release of \texttt{cleverhans}.
+
+In all cases, it is important to report the version number of
+\texttt{cleverhans}.
+
+In addition to this information, one should also report which attack methods
+were used, and the values of any configuration parameters used for these
+attacks.
+
+For example, you might report ``We benchmarked the robustness of our method to
+adversarial attack using v1.0.0 of \texttt{cleverhans} (Goodfellow et al. 2016).
+On a test set modified by \texttt{fgsm} with \texttt{eps} of 0.3, we obtained a
+test set accuracy of 71.3\%.''
+
+The library does not provide specific test datasets or data preprocessing. End
+users are responsible for appropriately preparing the data in their specific
+application areas, and for reporting sufficient information about the data
+preprocessing and model family to make benchmarks appropriately comparable.

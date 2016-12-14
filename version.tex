@@ -1,0 +1,38 @@
+\section{Versioning}
+\label{sec:version}
+
+Because one of the goals of \texttt{cleverhans} is to provide a basis for
+reproducible benchmarks, it is important that the version numbers provide useful
+information. The library uses semantic
+versioning,\footnote{\url{http://semver.org/}} meaning that version numbers take
+the form of MAJOR.MINOR.PATCH.
+
+The PATCH number increments whenever backwards-compatible bug fixes are made.
+For the purpose of this library, a bug is not considered backwards-compatible if
+it changes the results of a benchmark test. The MINOR number increments whenever
+new features are added in a backwards-compatible manner. The MAJOR number
+increments whenever an interface changes.
+
+As of this writing, no bug affecting the accuracy of a performance number used
+for a benchmark has ever been discovered. If one is discovered in the future,
+fixing this bug would cause the MAJOR number to increment, because it is
+considered a change in the interface mapping from the specification of a
+benchmark to the reported performance. Release notes accompanying each revision
+will indicate whether an increment to the MAJOR number invalidates earlier
+benchmark results or not.
+
+\section{Version notes}
+
+Version 1.0.0 contains the following new features and improvements since v0.1:
+\begin{itemize}
+\item  Added {\tt jsma} , the saliency map attack
+\item Improved the MNIST model in the tutorial, for greater speed and accuracy
+\end{itemize}
+
+The major version number has incremented due to bug fixes that affect the reproducibility of benchmarks:
+\begin{itemize}
+\item Fixed a bug in {\tt tf\_model\_loss} that reduced the effectiveness of both model training and adversarial example construction.
+\item Fixed a bug in {\tt tf\_model\_eval} that could result in overestimating the accuracy.
+\end{itemize}
+For this reason, any benchmarks collected using v0.1 should be replaced using benchmarks
+collected using v1.0.0.
