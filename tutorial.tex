@@ -1,5 +1,10 @@
 \documentclass[]{article}
 
+% Using the caption package allows us to support captions that contain "itemize" environments.
+% The font=small option makes the text of captions smaller than the main text.
+% Marie asked us to do this.
+\usepackage[font=small]{caption}
+
 \usepackage{natbib}
 \usepackage{breakcites}
 \usepackage{hyperref}
@@ -32,6 +37,7 @@
 \input{abstract}
 
 \input{introduction}
+\input{why}
 
 \section*{Acknowledgments}
 The author would like to thank the NIPS organizers for inviting him to
