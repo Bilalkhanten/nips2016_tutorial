@@ -4,6 +4,16 @@
 \usepackage{breakcites}
 \usepackage{hyperref}
 \usepackage{authblk}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\usepackage{bm}
+
+% MIT_TEMPLATE
+\newif\ifMIT
+%\MITtrue % uncomment to use MIT template
+\MITfalse
+
+\input{math_commands.tex}
 
 \title{NIPS 2016 Tutorial:\\ Generative Adversarial Networks}
 
@@ -23,7 +33,7 @@
 
 \input{introduction}
 
-\section{Acknowledgments}
+\section*{Acknowledgments}
 The author would like to thank the NIPS organizers for inviting him to
 present this tutorial.
 Many thanks also to those who commented on his Twitter and Facebook posts

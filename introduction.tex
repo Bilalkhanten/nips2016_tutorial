@@ -1,5 +1,4 @@
-\section{Introduction}
-\label{sec:introduction}
+\section*{Introduction}
 
 This report summarizes the content of the NIPS 2016 tutorial on {\em generative adversarial networks}
 (GANs) \citep{Goodfellow-et-al-NIPS2014-small}.
@@ -20,4 +19,45 @@ The tutorial describes:
 (5) state-of-the-art image models that combine GANs with other methods.
 Finally, the tutorial contains three exercises for readers to complete,
 and the solutions to these exercises.
+
+The slides for the tutorial are available in PDF and Keynote format at the following URLs:
+
+\url{http://www.iangoodfellow.com/slides/2016-12-04-NIPS.pdf}
+
+\url{http://www.iangoodfellow.com/slides/2016-12-04-NIPS.key}
+
+The video was recorded by the NIPS foundation and should be made available at a later date.
+
+Generative adversarial networks are an example of {\em generative models}.
+The term ``generative model'' is used in many different ways.
+In this tutorial, the term refers to any model that takes a training set,
+consisting of samples drawn from a distribution $\pdata$, and learns to
+represent an estimate of that distribution somehow.
+The result is a probability distribution $\pmodel$.
+In some cases, the model estimates $\pmodel$ explicitly, as shown in
+\figref{fig:density}.
+In other cases, the model is only able to generate samples from
+$\pmodel$, as shown in \figref{fig:generative_machine}.
+
+\begin{figure}
+\center
+\includegraphics[width=\textwidth]{density.pdf}
+\caption{Some generative models perform density estimation.
+These models take a training set of examples drawn from an unknown
+data-generating distribution $\pdata$ and return an estimate of that
+distribution. The estimate $\pmodel$ can be evaluated for a particular
+value of $\vx$ to obtain an estimate $\pmodel(\vx)$ of the true
+density $\pmodel(\vx)$.
+This figure illustrates the process for a collection of samples of
+one-dimensional data and a Gaussian model.
+}
+\label{fig:density}
+\end{figure}
+
+\begin{figure}
+  \center
+  \caption{TODO
+  }
+  \label{fig:generative_machine}
+\end{figure}
 
