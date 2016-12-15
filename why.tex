@@ -114,6 +114,11 @@ samples include:
     realistic images that correspond to rough scenes in the user's imagination.
     See \figref{fig:igan} and \figref{fig:ian}.
 
+  \item Image-to-image translation applications can convert aerial photos into maps
+    or convert sketches to images. There is a very long tail of creative applications
+    that are difficult to anticipate but useful once they have been discovered.
+    See \figref{fig:im2im}.
+
 \end{itemize}
 
 \begin{figure}
@@ -171,4 +176,27 @@ A video demonstration of iGAN is available at the following URL:
     \url{https://www.youtube.com/watch?v=FDELBFSeqQs}
   }
   \label{fig:ian}
+\end{figure}
+
+\begin{figure}
+  \centering
+  \includegraphics[width=\textwidth]{im2im}
+  \caption{
+    TODOcite 
+    created a concept they called {image to image translation},
+    encompassing many kinds of transformations of an image:
+    converting a satellite photo into a map,
+    coverting a sketch into a photorealistic image,
+    etc.
+    Because many of these conversion processes have multiple
+    correct outputs for each input, it is necessary to use
+    generative modeling to train the model correctly.
+    In particular, TODOcite use a GAN.
+    Image to image translation provides many examples of how
+    a creative algorithm designer can find several unanticipated uses
+    for generative models.
+    In the future, presumably many more such creative uses
+    will be found.
+  }
+  \label{fig:im2im}
 \end{figure}
