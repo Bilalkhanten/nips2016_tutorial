@@ -38,6 +38,9 @@ In some cases, the model estimates $\pmodel$ explicitly, as shown in
 \figref{fig:density}.
 In other cases, the model is only able to generate samples from
 $\pmodel$, as shown in \figref{fig:generative_machine}.
+Some models are able to do both.
+GANs focus primarily on sample generation, though it is possible to
+design GANs that can do both.
 
 \begin{figure}
 \center
@@ -56,7 +59,19 @@ one-dimensional data and a Gaussian model.
 
 \begin{figure}
   \center
-  \caption{TODO
+  \inclduegraphics[width=\textwidth]{generative_machine.pdf}
+  \caption{Some generative models are able to generate samples
+    from the model distribution.
+    In this illustration of the process, we show samples from
+    the ImageNet \citep{imagenet_cvpr09,Deng2010,ILSVRCarxiv14} 
+    dataset.
+    An ideal generative model would be able to train on examples
+    as shown on the left and then create more examples from the
+    same distribution as shown on the right.
+    At present, generative models are not yet advanced enough to
+    do this correctly for ImageNet, so for demonstration purposes
+    this figure uses actual ImageNet data to illustrate what an
+    ideal generative model would produce.
   }
   \label{fig:generative_machine}
 \end{figure}
