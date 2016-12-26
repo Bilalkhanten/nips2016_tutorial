@@ -9,7 +9,7 @@ how does a GAN work, in comparison to other generative models?
 \subsection{Maximum likelihood estimation}
 
 To simplify the discussion somewhat, we will focus on generative models
-that work via the principle of {\em maximum likelihood}.
+that work via the principle of \newterm{maximum likelihood}.
 Not every generative model uses maximum likelihood.
 Some generative models do not use maximum likelihood by default, but
 can be made to do so (GANs fall into this category).
@@ -21,7 +21,7 @@ distracting differences between different models.
 The basic idea of maximum likelihood is to define a model that provides
 an estimate of a probability distribution, parameterized by parameters
 $\vtheta$.
-We then refer to the {\em likelihood} as the probability that the model
+We then refer to the \newterm{likelihood} as the probability that the model
 assigns to the training data: $\prod_{i=1}^m \pmodel\left(\vx^{(i)}; \vtheta \right),$
 for a dataset containing $m$ training examples $\vx^{(i)}$.
 
@@ -47,14 +47,14 @@ the location of the maximum.
 The maximum likelihood process is illustrated in \figref{fig:mle}.
 
 We can also think of maximum likelihood estimation as minimizing the
-{\em KL divergence} between the data generating distribution and the
+\newterm{KL divergence} between the data generating distribution and the
 model:
 \[ \vtheta^* = \argmin_\vtheta \KL\left( \pdata(\vx) \Vert \pmodel(\vx ; \vtheta) \right). \]
 If we were able to do this precisely, then if $\pdata$ lies within the family of distributions
 $\pmodel(\vx ; \vtheta)$, the model would recover $\pdata$ exactly.
 In practice, we do not have access to $\pdata$ itself, but only to a training set
 consisting of $m$ samples from $\pdata$.
-We uses these to define $\ptrain$, an {\em empirical distribution} that places mass only
+We uses these to define $\ptrain$, an \newterm{empirical distribution} that places mass only
 on exactly those $m$ points, approximating $\pdata$.
 Minimizing the KL divergence between $\ptrain$ and $\pmodel$ is exactly equivalent to maximizing
 the log-likelihood of the training set.
@@ -154,7 +154,7 @@ There are currently two popular approaches to tractable explicit density models:
 fully visible belief networks and nonlinear independent components analysis.
 
 \paragraph{Fully visible belief networks}
-{\em Fully visible belief networks} \citep{Frey96,Frey98} or FVBNs are models that use the chain
+\newterm{Fully visible belief networks} \citep{Frey96,Frey98} or FVBNs are models that use the chain
 rule of probability to decompose a probability distribution over an $n$-dimensional vector $\vx$
 into a product of one-dimensional probability distributions:
 \[
@@ -241,7 +241,7 @@ as high a value of the log-likelihood as it does of $\mathcal{L}$.
 For many families of models, it is possible to define an $\mathcal{L}$ that is computationally
 tractable even when the log-likelihood is not.
 Currently, the most popular approach to variational learning in deep generative models
-is the {\em variational autoencoder} \citep{Kingma-arxiv2013,Rezende-et-al-ICML2014} or VAE.
+is the \newterm{variational autoencoder} \citep{Kingma-arxiv2013,Rezende-et-al-ICML2014} or VAE.
 Variational autoencoders are one of the three approaches to deep generative modeling that are
 the most popular as of this writing, along with FVBNs and GANs.
 The main drawback of variational methods is that the deterministic approximation induces some bias,
