@@ -6,6 +6,8 @@ desirable to build one.
 Now we can ask: how does a generative model actually work? And in particular,
 how does a GAN work, in comparison to other generative models?
 
+\subsection{Maximum likelihood estimation}
+
 To simplify the discussion somewhat, we will focus on generative models
 that work via the principle of {\em maximum likelihood}.
 Not every generative model uses maximum likelihood.
@@ -206,7 +208,27 @@ admit the use of $\vz$ with larger dimension than $\vx$.
 \label{fig:nvp}
 \end{figure}
 
+In summary, models that define an explicit, tractable density are highly
+effective, because they permit the use of an optimization algorithm directly
+on the log-likelihood of the training data.
+However, the family of models that provide a tractable density is limited,
+with different families having different disadvantages.
+
 \subsubsection{Explicit models requiring approximation}
 \label{sec:approx}
 
+To avoid some of the disadvantages imposed by the design requirements of models
+with tractable density functions, other models have been developed that still
+provide an explicit density function but use one that is intractable, requiring
+the use of approximations to maximize the likelihood.
+These fall roughly into two categories: those using deterministic approximations,
+which almost always means variational methods, and those using stochastic approximations,
+meaning Markov chain Monte Carlo methods.
+
+\paragraph{Variational approximations}
 TODO
+
+\paragraph{Monte Carlo approximations}
+TODO
+
+
