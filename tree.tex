@@ -248,11 +248,15 @@ The main drawback of variational methods is that the deterministic approximation
 in the sense that even with a perfect optimization algorithm and infinite training data, the gap
 between $\mathcal{L}$ and the true likelihood can result in $\pmodel$ learning something other than
 the true $\pdata$.
+GANs were designed to be unbiased, in the sense that with a large enough model and infinite data,
+the Nash equilibrium for a GAN game corresponds to recovering $\pdata$ exactly.
 In practice, variational methods often obtain very good likelihood, but are regarded as producing
 lower quality samples.
 There is not a good method of quantitatively measuring sample quality, so this is a subjective opinion,
 not an empirical fact.
 See \figref{fig:vae_samples} for an example of some samples drawn from a VAE.
+While it is difficult to point to a single aspect of GAN design and say that it results in
+better sample quality, GANs are generally regarded as producing better samples.
 For more information about variational approximations, see chapter 19 of
 \citet{Goodfellow-et-al-2016}.
 
@@ -265,8 +269,36 @@ For more information about variational approximations, see chapter 19 of
   \label{fig:vae_samples}
 \end{figure}
 
-\paragraph{Monte Carlo approximations}
-TODO
-For more information about Monte Carlo approximations, see chapter 18 of
+\paragraph{Markov chain approximations}
+Most deep learning algorithms make use of some form of stochastic approximation,
+at the very least in the form of using a small number of randomly selected training
+examples to form a minibatch used to minimize the expected loss.
+Usually, sampling-based approximations work reasonably well as long as a fair sample
+can be generated quickly (e.g. selecting a single example from the training set
+is a cheap operation) and as long as the variance across samples is not too high.
+Some models require the generation of more expensive samples, using Markov chain
+techniques.
+A Markov chain is a process for generating samples by repeatedly drawing a sample
+$\vx' \sim q(\vx' \mid \vx).$
+By repeatedly updating $\vx$ according to the transition operator $q$, Markov chain
+methods can sometimes guarantee that $\vx$ will eventually converge to a sample from
+$\pmodel(\vx)$.
+Unfortunately, this convergence can be very slow, and there is no clear way to test
+whether the chain has converged, so in practice one often uses $\vx$ too early, before
+it has truly converged to be a fair sample from $\pmodel$.
+In high-dimensional spaces, Markov chains become less efficient.
+Boltzmann machines \citep{Fahlman83,Ackley85,Hinton-Boltzmann,Hinton86a} are a
+family of generative models that rely on Markov chains both to train the model
+or to generate a sample from the model.
+Boltzmann machines were an important part of the deep learning renaissance beginning
+in 2006 \citep{Hinton06,hinton2007learning} but they are now used only very rarely,
+presumably mostly because the underlying Markov chain approximation techniques have
+not scaled to problems like ImageNet generation.
+Moreover, even if Markov chain methods scaled well enough to be used for training,
+the use of a Markov chain to generate samples from a trained model is undesirable
+compared to single-step generation methods because the multi-step Markov chain
+approach has higher computational cost.
+GANs were designed to avoid using Markov chains for these reasons.
+For more information about Markov chain Monte Carlo approximations, see chapter 18 of
 \citet{Goodfellow-et-al-2016}.
 
