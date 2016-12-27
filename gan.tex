@@ -164,5 +164,34 @@ is $0$ for all examples.
 
 \subsubsection{Minimax}
 
+So far we have specified the cost function for only the discriminator.
+A complete specification of the game requires that we specify a cost function also
+for the generator.
+
+The simplest version of the game is a \newterm{zero-sum game}, in which the sum of all player's
+costs is always zero.
+In this version of the game,
+\[ J^{(G)} = - J^{(D)} .\]
+
+Because $J^{(G)}$ is tied directly to $J^{(D)}$, we can summarize the entire game with a
+\newterm{value function} specifying the discriminator's payoff:
+\[ V\left(\vtheta^{(D)}, \vtheta^{(G)} \right) = - J^{(D)} \left(\vtheta^{(D)}, \vtheta^{(G)} \right).\]
+
+Zero-sum games are also called \newterm{minimax} games because their solution involves minimization
+in an outer loop and maximization in an inner loop:
+\[ \vtheta^{(G)*} = \argmin_{\vtheta^{(G)}} \max_{\vtheta^{(D)}} V\left(\vtheta^{(D)}, \vtheta^{(G)} \right) . \]
+
+The minimax game is mostly of interest because it is easily amenable to theoretical analysis.
+\citet{Goodfellow-et-al-NIPS2014-small} used this variant of the GAN game to show that learning in
+this game resembles minimizing the Jensen-Shannon divergence between the data and the model distribution,
+and that the game converges to its equilibrium if both players' policies can be updated directly in
+function space.
+In practice, the players are represented with deep neural nets and updates are made in parameter space,
+so these results, which depend on convexity, do not apply.
+
+\subsubsection{Heuristic, non-saturating game}
+
 TODO
 
+In the minimax game, the generator minimizes the log-probability of the discriminator being correct.
+In this game, the generator maximizes the log-probability of the discriminator being mistaken.
