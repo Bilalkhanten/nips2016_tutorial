@@ -161,6 +161,23 @@ The only difference is that the classifier is trained on two minibatches of data
 dataset, where the label is $1$ for all examples, and one coming from the generator, where the label
 is $0$ for all examples.
 
+All versions of the GAN game encourage the discriminator to minimize \eqref{eq:discriminator_cost}.
+In all cases, the discriminator has the same optimal strategy.
+The reader is now encouraged to complete the exercise in \secref{sec:opt_d} and review its solution
+given in \secref{sec:opt_d_soln}. This exercise shows how to derive the optimal discriminator strategy
+and discusses the importance of the form of this solution.
+
+We see that by training the discriminator, we are able to obtain an estimate of the ratio
+\[
+  \frac{\pdata(\vx)}{\pmodel(\vx)}
+\]
+at every point $\vx$.
+Estimating this ratio enables us to compute a wide variety of divergences and their gradients.
+This is the key approximation technique that sets GANs apart from variational autoencoders
+and Boltzmann machines.
+Other deep generative models make approximations based on lower bounds or Markov chains;
+GANs make approximations based on using supervised learning to estimate a ratio of two densities.
+
 
 \subsubsection{Minimax}
 
