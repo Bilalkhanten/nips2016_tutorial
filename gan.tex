@@ -143,6 +143,25 @@ in practice is simultaneous gradient descent, with one step for each player.
 
 Several different cost functions may be used within the GANs framework.
 
+\subsubsection{The discriminator's cost, $J^{(D)}$}
+
+All of the different games designed for GANs so far use the same cost for the
+discriminator, $J^{(D)}$. They differ only in terms of the cost used for the
+generator, $J^{(G)}$.
+
+The cost used for the discriminator is:
+\begin{equation}
+  J^{(D)}(\vtheta^{(D)}, \vtheta^{(G)}) = -\frac{1}{2} \E_{\vx \sim \pdata} \log D(\vx; \vtheta^{(D)}) - \frac{1}{2} \E_{\vz} \log \left(1 - D\left( G(z); \vtheta^{(G)} \right) \right).
+  \label{eq:discriminator_cost}
+\end{equation}
+
+This is just the standard cross-entropy cost that is minimized when training a standard binary classifier
+with a sigmoid output.
+The only difference is that the classifier is trained on two minibatches of data; one coming from the
+dataset, where the label is $1$ for all examples, and one coming from the generator, where the label
+is $0$ for all examples.
+
+
 \subsubsection{Minimax}
 
 TODO
