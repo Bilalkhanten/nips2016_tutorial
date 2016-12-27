@@ -151,7 +151,7 @@ generator, $J^{(G)}$.
 
 The cost used for the discriminator is:
 \begin{equation}
-  J^{(D)}(\vtheta^{(D)}, \vtheta^{(G)}) = -\frac{1}{2} \E_{\vx \sim \pdata} \log D(\vx; \vtheta^{(D)}) - \frac{1}{2} \E_{\vz} \log \left(1 - D\left( G(z); \vtheta^{(G)} \right) \right).
+  J^{(D)}(\vtheta^{(D)}, \vtheta^{(G)}) = -\frac{1}{2} \E_{\vx \sim \pdata} \log D(\vx) - \frac{1}{2} \E_{\vz} \log \left(1 - D\left( G(z)\right) \right).
   \label{eq:discriminator_cost}
 \end{equation}
 
@@ -188,7 +188,10 @@ for the generator.
 The simplest version of the game is a \newterm{zero-sum game}, in which the sum of all player's
 costs is always zero.
 In this version of the game,
-\[ J^{(G)} = - J^{(D)} .\]
+\begin{equation}
+J^{(G)} = - J^{(D)}.
+\label{eq:minimax}
+\end{equation}
 
 Because $J^{(G)}$ is tied directly to $J^{(D)}$, we can summarize the entire game with a
 \newterm{value function} specifying the discriminator's payoff:
@@ -208,7 +211,112 @@ so these results, which depend on convexity, do not apply.
 
 \subsubsection{Heuristic, non-saturating game}
 
-TODO
+The cost used for the generator in the minimax game (\eqref{eq:minimax}) is useful for theoretical analysis,
+but does not perform especially well in practice.
+
+Minimizing the cross-entropy between a target class and a classifier's predicted distribution
+is highly effective because the cost never saturates when the classifier has the wrong output.
+The cost does eventually saturate, approaching zero, but only when the classifier has already
+chosen the correct class.
+
+In the minimax game, the discriminator minimizes a cross-entropy, but the generator maximizes
+the same cross-entropy.
+This is unfortunate for the generator, because when the discriminator successfully rejects
+generator samples with high confidence, the generator's gradient vanishes.
+
+To solve this problem, one approach is to continue to use cross-entropy minimization for the
+generator.
+Instead of flipping the sign on the discriminator's cost to obtain a cost for the generator,
+we flip the target used to construct the cross-entropy cost.
+The cost for the generator then becomes:
+\[
+  J^{(G)} = -\frac{1}{2} \E_\vz \log D(G(\vz))
+\]
 
 In the minimax game, the generator minimizes the log-probability of the discriminator being correct.
 In this game, the generator maximizes the log-probability of the discriminator being mistaken.
+
+This version of the game is heuristically motivated, rather than being motivated by a theoretical
+concern.
+The sole motivation for this version of the game is to ensure that each player has a strong
+gradient when that player is ``losing'' the game.
+
+In this version of the game, the game is no longer zero-sum, and cannot be described with a single
+value function.
+
+\subsection{The DCGAN architecture}
+
+Most GANs today are at least loosely based on the DCGAN architecture \citep{radford2015unsupervised}.
+DCGAN stands for ``deep, convolution GAN.'' Though GANs were both deep and convolutional prior to
+DCGANs, the name DCGAN is useful to refer to this specific style of architecture.
+Some of the key insights of the DCGAN architecture were to:
+\begin{itemize}
+  \item Use batch normalization layers in most layers of both the discriminator and the generator,
+        with the two minibatches for the discriminator normalized separately.
+        The last layer of the generator and first layer of the discriminator are not batch normalized,
+        so that the model can learn the correct mean and scale of the data distribution.
+        See \figref{fig:dcgan}.
+  \item The overall network structure is mostly borrowed from the all-convolutional net \citep{Springenberg2015}.
+        This architecture contains neither pooling nor ``unpooling'' layers.
+        When the generator needs to increase the spatial dimension of the representation
+        it uses transposed convolution with a stride greater than 1.
+  \item The use of the Adam optimizer rather than SGD with momentum.
+\end{itemize}
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{dcgan}
+  \caption{The generator network used by a DCGAN. Figure reproduced from \citet{radford2015unsupervised}.}
+\label{fig:dcgan}
+\end{figure}
+
+Prior to DCGANs, LAPGANs \citep{denton2015deep} were the only version of GAN
+that had been able to scale to high resolution images.
+LAPGANs require a multi-stage generation process in which multiple GANs
+generate different levels of detail in a Laplacian pyramid representation
+of an image.
+DCGANs were the first GAN model to learn to generate high resolution images
+in a single shot.
+As shown in \figref{fig:dcgan_lsun}, DCGANs are able to generate high quality
+images when trained on restricted domains of images, such as images of bedrooms.
+DCGANs also clearly demonstrated that GANs learn to use their latent code
+in meaningful ways, with simple arithmetic operations in latent space
+having clear interpretation as arithmetic operations on semantic attributes
+of the input, as demonstrated in \figref{fig:dcgan_face_arithmetic}.
+
+
+\begin{figure}
+\centering
+$
+\vcenter{
+    \hbox{%
+\includegraphics[width=.15\figwidth]{man_with_glasses.png} %
+    }
+}
+\vcenter{\hbox{-}} %
+\vcenter{\hbox{
+\includegraphics[width=.15\figwidth]{man_without_glasses.png} %
+}}
+\vcenter{\hbox{+}} %
+\vcenter{\hbox{
+\includegraphics[width=.15\figwidth]{woman_without_glasses.png} %
+}}
+\vcenter{\hbox{=}} %
+\vcenter{\hbox{
+\includegraphics[width=.45\figwidth]{woman_with_glasses.png}
+}
+}
+$
+\caption{DCGANs demonstrated that GANs can learn a distributed representation
+that disentangles the concept of gender from the concept of wearing
+glasses. If we begin with the representation of the concept of a
+man with glasses, then subtract the vector representing the concept
+of a man without glasses, and finally add the vector representing
+the concept of a woman without glasses, we obtain the vector representing
+the concept of a woman with glasses. The generative model correctly
+decodes all of these representation vectors to images that may be
+recognized as belonging to the correct class.
+Images reproduced from \citet{radford2015unsupervised}.
+}
+\label{fig:dcgan_face_arithmetic}
+\end{figure}

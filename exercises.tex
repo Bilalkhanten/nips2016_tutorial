@@ -8,7 +8,7 @@ The solutions are given in \secref{sec:solutions}.
 
 As described in \eqref{eq:discriminator_cost}, the goal of the discriminator is to minimize
 \begin{equation}
-  J^{(D)}(\vtheta^{(D)}, \vtheta^{(G)}) = -\frac{1}{2} \E_{\vx \sim \pdata} \log D(\vx; \vtheta^{(D)}) - \frac{1}{2} \E_{\vz} \log \left(1 - D\left( G(z); \vtheta^{(G)} \right) \right).
+  J^{(D)}(\vtheta^{(D)}, \vtheta^{(G)}) = -\frac{1}{2} \E_{\vx \sim \pdata} \log D(\vx) - \frac{1}{2} \E_{\vz} \log \left(1 - D\left( G(z) \right) \right)
 \end{equation}
 with respect to $\vtheta^{(D)}$.
 Imagine that the discriminator can be optimized in function space, so the value of
