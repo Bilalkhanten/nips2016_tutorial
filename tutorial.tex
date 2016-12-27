@@ -5,6 +5,10 @@
 % Marie asked us to do this.
 \usepackage[font=small]{caption}
 
+
+\setcounter{secnumdepth}{3} % Number subsubsections, because we reference them,
+% so the reader needs numbers to find the correct place.
+
 \usepackage{amsfonts}
 \usepackage{natbib}
 \usepackage{breakcites}
@@ -30,6 +34,11 @@
 
 
 \date{}
+
+
+% Make \[ \] math have equation numbers
+\DeclareRobustCommand{\[}{\begin{equation}}
+\DeclareRobustCommand{\]}{\end{equation}}
 
 \begin{document}
 
