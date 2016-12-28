@@ -49,7 +49,10 @@ The maximum likelihood process is illustrated in \figref{fig:mle}.
 We can also think of maximum likelihood estimation as minimizing the
 \newterm{KL divergence} between the data generating distribution and the
 model:
-\[ \vtheta^* = \argmin_\vtheta \KL\left( \pdata(\vx) \Vert \pmodel(\vx ; \vtheta) \right). \]
+\begin{equation}
+\vtheta^* = \argmin_\vtheta \KL\left( \pdata(\vx) \Vert \pmodel(\vx ; \vtheta) \right).
+\label{eq:kl}
+\end{equation}
 If we were able to do this precisely, then if $\pdata$ lies within the family of distributions
 $\pmodel(\vx ; \vtheta)$, the model would recover $\pdata$ exactly.
 In practice, we do not have access to $\pdata$ itself, but only to a training set

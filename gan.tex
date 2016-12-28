@@ -177,6 +177,9 @@ This is the key approximation technique that sets GANs apart from variational au
 and Boltzmann machines.
 Other deep generative models make approximations based on lower bounds or Markov chains;
 GANs make approximations based on using supervised learning to estimate a ratio of two densities.
+The GAN approximation is subject to the failures of supervised learning: overfitting and underfitting.
+In principle, with perfect optimization and enough training data, these failures can be overcome.
+Other models make other approximations that have other failures.
 
 
 \subsubsection{Minimax}
@@ -243,6 +246,129 @@ gradient when that player is ``losing'' the game.
 
 In this version of the game, the game is no longer zero-sum, and cannot be described with a single
 value function.
+
+\subsubsection{Maximum likelihood game}
+\label{sec:mle_gan}
+
+We might like to be able to do maximum likelihood learning with GANs, which would mean minimizing
+the KL divergence between the data and the model, as in \eqref{eq:kl}.
+Indeed, in \secref{sec:tree}, we said that GANs could optionally implement maximum likelihood,
+for the purpose of simplifying their comparison to other models.
+
+There are a variety of methods of approximating \eqref{eq:kl} within the GAN
+framework.
+\citet{Goodfellow-ICLR2015} showed that using
+\[ J^{(G)} = -\frac{1}{2} \E_z \exp\left( \sigma^{-1} \left( D(G(\vz)) \right) \right), \]
+  where $\sigma$ is the logistic sigmoid function, is equivalent to minimizing \eqref{eq:kl},
+  under the assumption that the discriminator is optimal.
+  This equivalence holds in expectation; in practice, both stochastic gradient descent on the KL
+  divergence and the GAN training procedure will have some variance around the true expected
+  gradient due to the use of sampling (of $\vx$ for maximum likelihood and $\vz$ for GANs)
+  to construct the estimated gradient.
+  The demonstration of this equivalence is an exercise (\secref{sec:mle_exercise}
+  with the solution in \secref{sec:mle_soln}).
+
+
+  Other methods of approximating maximum likelihood within the GANs framework are possible.
+  See for example \citet{nowozin2016f}.
+  
+ 
+
+  \subsubsection{Is the choice of divergence a distinguishing feature of GANs?}
+
+  As part of our investigation of how GANs work, we might wonder exactly what it is
+  that makes them work well for generating samples.
+
+  Previously, many people (including the author) believed that GANs produced sharp,
+  realistic samples because they minimize the Jensen-Shannon divergence while
+  VAEs produce blurry samples because they minimize the KL divergence between the
+  data and the model.
+
+  The KL divergence is not symmetric; minimizing $\KL(\pdata \Vert \pmodel)$
+  is different from minimizing $\KL(\pmodel \Vert \pdata)$.
+  Maximum likelihood estimation performs the former; minimizing the Jensen-Shannon
+  divergence is somewhat more similar to the latter.
+  As shown in \figref{fig:kl}, the latter might be expected to yield better samples
+  because a model trained with this divergence would prefer
+  to generate samples that come only from modes in the training distribution
+  even if that means ignoring some modes, rather than
+  including all modes but generating some samples that do not come 
+  from any training set mode.
+
+  \begin{figure}
+    \centering
+    \includegraphics[width=\figwidth]{kl}
+    \caption{
+The two directions of the KL divergence are not equivalent.
+The differences are most obvious when the model has too little
+capacity to fit the data distribution.
+Here we show an example of a distribution over one-dimensional
+data $x$.
+In this example, we use a mixture of two Gaussians as the data
+distribution, and a single Gaussian as the model family.
+Because a single Gaussian cannot capture the true data distribution,
+the choice of divergence determines the tradeoff that the model makes.
+On the left, we use the maximum likelihood criterion.
+The model chooses to average out the two modes, so that it places high
+probability on both of them.
+On the right, we use the reverse order of the arguments to the KL
+divergence, and the model chooses to capture only one of the two modes.
+It could also have chosen the other mode; the two are both local minima
+of the reverse KL divergence.
+We can think of $\KL( \pdata \Vert \pmodel )$ as preferring to place
+high probability everywhere that the data occurs,
+and $\KL( \pmodel \Vert \pdata )$ as preferrring to place low probability
+wherever the data does not occur.
+From this point of view, one might expect
+$\KL( \pmodel \Vert \pdata )$
+to yield more visually pleasing samples,
+because the model will not choose to generate unusual samples lying
+between modes of the data generating distribution.
+    }
+    \label{fig:kl}
+  \end{figure}
+
+Some newer evidence suggests that the use of the Jensen-Shannon divergence does
+not explain why GANs make sharper samples:
+\begin{itemize}
+  \item It is now possible to train GANs using maximum likelihood, as described in
+    \secref{sec:mle_gan}.
+    These models still generate sharp samples, and still select a small number of modes.
+    See \figref{fig:fgan}.
+  \item
+    GANs often choose to generate from very few modes.
+    The reverse KL prefers to generate from {\em as many modes as the model is able to};
+    it does not prefer fewer modes in general.
+    This suggests that the mode collapse is driven by a factor other than the choice 
+    of divergence.
+\end{itemize}
+
+\begin{figure}
+\centering
+\includegraphics[width=\figwidth]{fgan}
+\caption{
+The f-GAN model is able to minimize many different divergences.
+Because models trained to minimize $\KL(\pdata \Vert \pmodel)$
+still generate sharp samples and tend to select a small number
+of modes, we can conclude that the use of the Jensen-Shannon
+divergence is not a particular important distinguishing
+characteristic of GANs and that it does not explain why their
+samples tend to be sharp.
+}
+\label{fig:fgan}
+\end{figure}
+
+Altogether, this suggests that GANs choose to generate a small number of modes
+due to a defect in the training procedure, rather than due to the divergence
+they aim to minimize.
+This is discussed further in TODO.
+The reason that GANs produce sharp samples is not entirely clear.
+It may be that the family of models trained using GANs is different from the family
+of models trained using VAEs (for example, with GANs it is easy to make models
+where $\vx$ has a more complicated distribution than just an isotropic Gaussian
+conditioned on the input to the generator).
+It may also be that the kind of approximations that GANs make have different
+effects than the kind of approximations that other frameworks make.
 
 \subsection{The DCGAN architecture}
 
