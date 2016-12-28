@@ -344,8 +344,9 @@ not explain why GANs make sharper samples:
     These models still generate sharp samples, and still select a small number of modes.
     See \figref{fig:fgan}.
   \item
-    GANs often choose to generate from very few modes.
-    The reverse KL prefers to generate from {\em as many modes as the model is able to};
+    GANs often choose to generate from very few modes; fewer than the limitation
+    imposed by the model capacity.
+    The reverse KL prefers to generate from {\em as many modes of the data distribution as the model is able to};
     it does not prefer fewer modes in general.
     This suggests that the mode collapse is driven by a factor other than the choice 
     of divergence.
