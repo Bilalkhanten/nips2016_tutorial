@@ -221,6 +221,7 @@ In practice, the players are represented with deep neural nets and updates are m
 so these results, which depend on convexity, do not apply.
 
 \subsubsection{Heuristic, non-saturating game}
+\label{sec:heuristic}
 
 The cost used for the generator in the minimax game (\eqref{eq:minimax}) is useful for theoretical analysis,
 but does not perform especially well in practice.
@@ -446,7 +447,7 @@ DCGAN stands for ``deep, convolution GAN.'' Though GANs were both deep and convo
 DCGANs, the name DCGAN is useful to refer to this specific style of architecture.
 Some of the key insights of the DCGAN architecture were to:
 \begin{itemize}
-  \item Use batch normalization layers in most layers of both the discriminator and the generator,
+  \item Use batch normalization \citep{Ioffe+Szegedy-2015} layers in most layers of both the discriminator and the generator,
         with the two minibatches for the discriminator normalized separately.
         The last layer of the generator and first layer of the discriminator are not batch normalized,
         so that the model can learn the correct mean and scale of the data distribution.
