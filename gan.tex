@@ -181,6 +181,14 @@ The GAN approximation is subject to the failures of supervised learning: overfit
 In principle, with perfect optimization and enough training data, these failures can be overcome.
 Other models make other approximations that have other failures.
 
+Because the GAN framework can naturally be analyzed with the tools of game theory,
+we call GANs ``adversarial.'' But we can also think of them as cooperative, in
+the sense that the discriminator estimates this ratio of densities and then freely
+shares this information with the generator.
+From this point of view, the discriminator is more like a teacher instructing the
+generator in how to improve than an adversary.
+So far, this cooperative view has not led to any particular change in the development
+of the mathematics.
 
 \subsubsection{Minimax}
 
