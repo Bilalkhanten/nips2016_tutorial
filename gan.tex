@@ -522,3 +522,46 @@ Images reproduced from \citet{radford2015unsupervised}.
 }
 \label{fig:dcgan_face_arithmetic}
 \end{figure}
+
+\subsection{How do GANs relate to noise-contrastive estimation and maximum likelihood?}
+
+While trying to understand how GANs work, one might naturally wonder about
+how they are connected to \newterm{noise-constrastive estimation} (NCE)
+\citep{Gutmann+Hyvarinen-2010}.
+Minimax GANs use the cost function from NCE as their value function, so the
+methods seem closely related at face value.
+It turns out that they actually learn very different things, because the
+two methods focus on different players within this game.
+Roughly speaking, the goal of NCE is to learn the density model within the
+discriminator, while the goal of GANs is to learn the sampler defining
+the generator.
+While these two tasks seem closely related at a qualitative level, the
+gradients for the tasks are actually quite different.
+Surprisingly, maximum likelihood turns out to be closely related to NCE,
+and corresponds to playing a minimax game with the same value function,
+but using a sort of heuristic update strategy rather than gradient descent
+for one of the two players.
+The connections are summarized in \figref{fig:nce}.
+
+\begin{figure}
+\centering
+\includegraphics[width=\figwidth]{nce}
+\caption{
+  \citet{Goodfellow-ICLR2015} demonstrated the following
+  connections between minimax GANs, noise-contrastive estimation, and
+  maximum likelihood: all three can be interpreted as strategies
+  for playing a minimax game with the same value function.
+  The biggest difference is in where $\pmodel$ lies.
+  For GANs, the generator is $\pmodel$, while for NCE and MLE,
+  $\pmodel$ is part of the discriminator.
+  Beyond this, the differences between the methods lie in the update
+  strategy.
+  GANs learn both players with gradient descent.
+  MLE learns the discriminator using gradient descent, but has a heuristic
+  update rule for the generator.
+  Specifically, after each discriminator update step, MLE copies the density model learned inside the discriminator and 
+  converts it into a sampler to be used as the generator.
+  NCE never updates the generator; it is just a fixed source of noise.
+}
+\label{fig:nce}
+\end{figure}
