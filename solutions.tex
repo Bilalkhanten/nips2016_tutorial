@@ -51,7 +51,75 @@ Figure reproduced from \citet{Goodfellow-et-al-NIPS2014-small}.
 \end{figure}
 
 
-\subsection{TODO}
+\subsection{Gradient descent for games}
+\label{sec:xy_soln}
+
+The value function
+\[ V(x, y) = x y \]
+is the simplest possible example of a continuous function with a saddle point.
+It is easiest to understand this game by visualizing the value function in three
+dimensions, as shown in \figref{fig:xy}.
+
+\begin{figure}
+\centering
+\includegraphics[width=\figwidth]{xy}
+\caption{A three-dimensional visualization of the value function $V(x,y) = xy$.
+  This is the canonical example of a function with a saddle point, at $x=y=0$.
+}
+\label{fig:xy}
+\end{figure}
+
+The three dimensional visualization shows us clearly that there is a saddle point
+at $x=y=0$. This is an equilibrium of the game. We could also have found this point
+by solving for where the derivatives are zero.
+
+Not every saddle point is an equilibrium; we require that an infinitesimal perturbation
+of one player's parameters cannot reduce that player's cost.
+The saddle point for this game satisfies that requirement.
+It is something of a pathological equilibrium because the value function is constant
+as a function of each player's parameter when holding the other player's parameter
+fixed.
+
+To solve for the trajectory taken by gradient descent, we take the derivatives, and find that
+\begin{align}
+  \frac{\partial x}{\partial t} = - y(t) \\
+  \frac{\partial y}{\partial t} = x(t). \label{eq:dy}
+\end{align}
+Diffentiating \eqref{eq:dy}, we obtain
+\[
+  \frac{\partial^2 y}{\partial t^2} = \frac{\partial x}{\partial t} = -y(t).
+\]
+Differential equations of this form have sinusoids as their set of basis functions
+of solutions.
+Solving for the coefficients that respect the boundary conditions, we obtain
+\begin{align}
+  x(t) = x(0) \cos(t) - y(0) \sin(t) \\
+  y(t) = x(0) \sin(t) + y(0) \cos(t).
+\end{align}
+
+These dynamics form a circular orbit, as shown in \figref{fig:orbit}.
+In other words, simultaneous gradient descent with an infinitesimal learning rate
+will orbit the equilibrium forever, at the same radius that it was initialized.
+With a larger learning rate, it is possible for simultaneous gradient descent to
+spiral outward forever.
+Simultaneous gradient descent will never approach the equilibrium.
+
+\begin{figure}
+  \center
+  \includegraphics[width=\figwidth]{orbit}
+  \caption{Simultaneous gradient descent with infinitesimal learning rate
+    will orbit indefinitely at constant radius when applied to $V(x,y) = xy$,
+    rather than approaching the equilibrium solution at $x=y=0$.
+  }
+  \label{fig:orbigt}
+\end{figure}
+
+For some games, simultaneous gradient descent does converge, and for others,
+such as the one in this exercise, it does not.
+For GANs, there is no theoretical prediction as to whether simultaneous
+gradient descent should converge or not.
+Settling this theoretical question, and developing algorithms guaranteed to
+converge, remain important open research problems.
 
 \subsection{Maximum likelihood in the GAN framework}
 \label{sec:mle_soln}
