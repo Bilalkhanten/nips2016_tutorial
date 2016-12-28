@@ -379,6 +379,66 @@ conditioned on the input to the generator).
 It may also be that the kind of approximations that GANs make have different
 effects than the kind of approximations that other frameworks make.
 
+\subsubsection{Comparison of cost functions}
+
+We can think of the generator network as learning by a strange kind of reinforcement
+learning.
+Rather than being told a specific output $\vx$ it should associate with each $\vz$,
+the generator takes actions and receives rewards for them.
+In particular, note that $J^{(G)}$ does not make reference to the training data
+directly at all; all information about the training data comes only through what
+the discriminator has learned. (Incidentally, this makes GANs resistant to overfitting,
+because the generator has no opportunity in practice to directly copy training examples)
+The learning process differs somewhat from traditional reinforcement learning because
+\begin{itemize}
+ \item The generator is able to observe not just the output of the reward function but
+   also its gradients.
+ \item The reward function is non-stationary; the reward is based on the discriminator
+   which learns in response to changes in the generator's policy.
+   \end{itemize}
+
+In all cases, we can think of the sampling process that begins with the selection of
+a specific $\vz$ value as an episode that receives a single reward, independent of the
+actions taken for all other $\vz$ values.
+The reward given to the generator is a function of a single scalar value,
+$D(G(\vz))$.
+We usually think of this in terms of cost (negative reward).
+The cost for the generator is always monotonically decreasing in $D(G(\vz))$ but
+different games are designed to make this cost decrease faster along different parts of the curve.
+
+\Figref{fig:comparison} shows the cost response curves as functions of $D(G(\vz))$ for three
+different variants of the GAN game.
+We see that the maximum likelihood game gives very high variance in the cost, with most of the
+cost gradient coming from the very few samples of $\vz$ that correspond to the samples that
+are most likely to be real rather than fake.
+The heuristically designed non-saturating cost has lower sample variance, which may explain
+why it is more successful in practice.
+  This suggests that variance reduction techniques could be an important research area
+  for improving the performance of GANs, especially GANs based on maximum likelihood.
+
+\begin{figure}
+\centering
+\includegraphics[width=\figwidth]{comparison}
+\caption{
+  The cost that the generator receives for generating a samples $G(\vz)$ depends only on
+  how the discriminator responds to that sample.
+  The more probability the discriminator assigns to the sample being real, the less cost
+  the generator receives.
+  We see that when the sample is likely to be fake, both the minimax game and the maximum
+  likelihood game have very little gradient, on the flat left end of the curve.
+  The heuristically motivated non-saturating cost avoids this problem.
+  Maximum likelihood also suffers from the problem that nearly all of the gradient comes
+  from the right end of the curve, meaning that a very small number of samples dominate
+  the gradient computation for each minibatch.
+  This suggests that variance reduction techniques could be an important research area
+  for improving the performance of GANs, especially GANs based on maximum likelihood.
+  Figure reproduced from \citet{Goodfellow-ICLR2015}.
+}
+\label{fig:comparison}
+\end{figure}
+
+
+
 \subsection{The DCGAN architecture}
 
 Most GANs today are at least loosely based on the DCGAN architecture \citep{radford2015unsupervised}.
