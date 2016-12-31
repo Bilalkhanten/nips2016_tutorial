@@ -191,6 +191,7 @@ So far, this cooperative view has not led to any particular change in the develo
 of the mathematics.
 
 \subsubsection{Minimax}
+\label{sec:minimax}
 
 So far we have specified the cost function for only the discriminator.
 A complete specification of the game requires that we specify a cost function also
@@ -284,6 +285,7 @@ framework.
  
 
   \subsubsection{Is the choice of divergence a distinguishing feature of GANs?}
+  \label{sec:which_divergence}
 
   As part of our investigation of how GANs work, we might wonder exactly what it is
   that makes them work well for generating samples.
@@ -371,7 +373,7 @@ samples tend to be sharp.
 Altogether, this suggests that GANs choose to generate a small number of modes
 due to a defect in the training procedure, rather than due to the divergence
 they aim to minimize.
-This is discussed further in TODO.
+This is discussed further in \secref{sec:mode_collapse}.
 The reason that GANs produce sharp samples is not entirely clear.
 It may be that the family of models trained using GANs is different from the family
 of models trained using VAEs (for example, with GANs it is easy to make models

@@ -111,7 +111,7 @@ Simultaneous gradient descent will never approach the equilibrium.
     will orbit indefinitely at constant radius when applied to $V(x,y) = xy$,
     rather than approaching the equilibrium solution at $x=y=0$.
   }
-  \label{fig:orbigt}
+  \label{fig:orbit}
 \end{figure}
 
 For some games, simultaneous gradient descent does converge, and for others,
@@ -123,4 +123,48 @@ converge, remain important open research problems.
 
 \subsection{Maximum likelihood in the GAN framework}
 \label{sec:mle_soln}
-TODO
+
+We wish to find a function $f$ such that the expected gradient of 
+\begin{equation}
+  J^{(G)} = \E_{\vx \sim p_g} f(\vx)
+  \label{eq:cost_per_sample}
+\end{equation}
+is equal to the expected gradient of 
+$\KL(\pdata \Vert p_g)$.
+
+First we take the derivative of the KL divergence with respect to a parameter $\theta$:
+\begin{equation}
+  \frac{\partial}{\partial \theta} \KL(\pdata \Vert p_g) = - \E_{\vx \sim \pdata} \frac{\partial}{\partial \theta} \log p_g(\vx) .
+\label{eq:mle_gradient}
+\end{equation}
+
+We now want to find the $f$ that will make the derivatives of \eqref{eq:cost_per_sample} match \eqref{eq:mle_gradient}.
+We begin by taking the derivatives of \eqref{eq:cost_per_sample}:
+\[
+  \frac{\partial}{\partial \theta} J^{(G)} = \E_{\vx \sim p_g} f(x) \frac{\partial}{\partial \theta} \log p_g(\vx).
+\]
+To obtain this result, we made two assumptions:
+\begin{enumerate}
+  \item We assumed that $p_g(\vx) \geq 0$ everywhere so that we were able to use the identity $p_g(\vx) = \exp( \log p_g(\vx) ).$
+  \item We assumed that we can use Leibniz's rule to exhange the order of differentiation and integration (specifically, that both the function and its derivative are continuous, and that the function vanishes for infinite values of $\vx$).
+\end{enumerate}
+
+We see that the derivatives of $J^{(G)}$ come very near to giving us what we want; the only problem is that
+the expectation is computed by drawing samples from $p_g$ when we would like it to be computed by drawing
+samples from $p_data$.
+We can fix this problem using an importance sampling trick; by setting $f(x) = \frac{\pdata(\vx)}{p_g(\vx)}$
+we can reweight the contribution to the gradient from each generator sample to compensate for it having
+been drawn from the generator rather than the data.
+
+Note that when constructing $J^{(G)}$ we must {\em copy} $p_g$ into $f(x)$ so that $f(x)$ has a derivative of
+zero with respect to the parameters of $p_g$.
+Fortunately, this happens naturally if we obtain the value of $\frac{\pdata(\vx)}{p_g(\vx)}$.
+
+From \secref{sec:opt_d_soln}, we already know that the discriminator estimates the desired ratio.
+Using some algebra, we can obtain a numerically stable implementation of $f(\vx)$.
+If the discriminator is defined to apply a logistic sigmoid function at the output layer,
+with $D(\vx) = \sigma( a(\vx) )$, then $f(x) = - \exp(a(\vx))$.
+
+This exercise is taken from a result shown by \citet{Goodfellow-ICLR2015}.
+From this exercise, we see that the discriminator estimates a ratio of densities
+that can be used to calculate a variety of divergences.

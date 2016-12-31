@@ -41,7 +41,7 @@ attempted previously.
 Generative models, and especially GANs, can also be used for inverse reinforcement
 learning.
 Some of these connections to reinforcement learning are described further in
-TODO.
+\secref{sec:rl_connections}.
 
 \item Generative models can be trained with missing data and can provide predictions
   on inputs that are missing data.
@@ -53,7 +53,7 @@ TODO.
   The learning algorithm can improve its generalization by studying a large number
   of unlabeled examples which, which are usually easier to obtain.
   Generative models, and GANs in particular, are able to perform semi-supervised
-  learning reasonably well. This is described further in TODO.
+  learning reasonably well. This is described further in \secref{sec:ssl}.
 
 \item Generative models, and GANs in particular, enable machine learning to work with
   {\em multi-modal} outputs.
@@ -145,7 +145,7 @@ the benefit of using a generative model trained to generate realistic samples fr
   \centering
   \includegraphics[width=\textwidth]{igan}
   \caption{
-TODOcite developed an interactive application called {\em interactive generative adversarial networks}
+    \citet{zhu2016generative} developed an interactive application called {\em interactive generative adversarial networks}
 (iGAN). 
 A user can draw a rough sketch of an image, and iGAN uses a GAN to produce the most similar
 realistic image.
@@ -164,7 +164,7 @@ A video demonstration of iGAN is available at the following URL:
   \centering
   \includegraphics[width=\textwidth]{ian}
   \caption{
-    TODOcite developed {\em interactive adversarial networks} (IAN).
+    \citet{BrockLRW16a} developed {\em introspective adversarial networks} (IAN).
     The user paints rough modifications to a photo, such as painting
     with black paint in an area where the user would like to add black
     hair, and IAN turns these rough paint strokes into photorealistic
@@ -182,7 +182,7 @@ A video demonstration of iGAN is available at the following URL:
   \centering
   \includegraphics[width=\textwidth]{im2im}
   \caption{
-    TODOcite 
+    \citet{isola2016image}
     created a concept they called {image to image translation},
     encompassing many kinds of transformations of an image:
     converting a satellite photo into a map,
@@ -191,7 +191,7 @@ A video demonstration of iGAN is available at the following URL:
     Because many of these conversion processes have multiple
     correct outputs for each input, it is necessary to use
     generative modeling to train the model correctly.
-    In particular, TODOcite use a GAN.
+    In particular, \citet{isola2016image} use a GAN.
     Image to image translation provides many examples of how
     a creative algorithm designer can find several unanticipated uses
     for generative models.

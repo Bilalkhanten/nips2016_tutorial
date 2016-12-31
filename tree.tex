@@ -247,8 +247,22 @@ Currently, the most popular approach to variational learning in deep generative 
 is the \newterm{variational autoencoder} \citep{Kingma-arxiv2013,Rezende-et-al-ICML2014} or VAE.
 Variational autoencoders are one of the three approaches to deep generative modeling that are
 the most popular as of this writing, along with FVBNs and GANs.
-The main drawback of variational methods is that the deterministic approximation induces some bias,
-in the sense that even with a perfect optimization algorithm and infinite training data, the gap
+The main drawback of variational methods is that,
+when too weak of an approximate posterior distribution or too weak of a prior distribution is used,
+\footnote{
+  Empirically, VAEs with highly flexible priors or highly flexible approximate posteriors
+  can obtain values of $\mathcal{L}$ that are near their own log-likelihood
+  \citep{kingma2016improving,chen2016variational}.
+  Of course, this is testing the gap between the objective and the bound at the maximum of the bound;
+  it would be better, but not feasible, to test the gap at the maximum of the objective.
+  VAEs obtain likelihoods that are competitive with other methods, suggesting that they are also
+  near the maximum of the objective.
+  In personal conversation, L. Dinh and D. Kingma have conjectured that a family of models
+  \citep{Dinh-et-al-arxiv2014,rezende2015variational,kingma2016improving,dinh2016density}
+  usable as VAE priors or approximate posteriors are universal approximators.
+  If this could be proven, it would establish VAEs as being asymptotically consistent.
+}
+even with a perfect optimization algorithm and infinite training data, the gap
 between $\mathcal{L}$ and the true likelihood can result in $\pmodel$ learning something other than
 the true $\pdata$.
 GANs were designed to be unbiased, in the sense that with a large enough model and infinite data,
@@ -260,6 +274,8 @@ not an empirical fact.
 See \figref{fig:vae_samples} for an example of some samples drawn from a VAE.
 While it is difficult to point to a single aspect of GAN design and say that it results in
 better sample quality, GANs are generally regarded as producing better samples.
+Compared to FVBNs, VAEs are regarded as more difficult to optimize, but GANs are not
+an improvement in this respect.
 For more information about variational approximations, see chapter 19 of
 \citet{Goodfellow-et-al-2016}.
 
@@ -347,8 +363,10 @@ models:
     invertible and the latent code $\vz$ must have the same dimension as the samples
     $\vx$.
   \item No Markov chains are needed. This is an advantage relative to Boltzmann machines and GSNs.
-  \item No variational bound is needed, and thus the GAN framework is able to be asymptotically
-    consistent. This is an advantage relative to VAEs.
+  \item No variational bound is needed, and specific model families usable within the GAN
+    framework are already known to be universal approximators, so GANs are already known
+    to be asymptotically consistent.
+    Some VAEs are conjectured to be asymptotically consistent, but this is not yet proven.
   \item GANs are subjectively regarded as producing better samples than other methods.
 \end{itemize}
 At the same time, GANs have taken on a new disadvantage: training them requires finding
